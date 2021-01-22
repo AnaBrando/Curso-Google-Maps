@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                <style>
+                        html,body{height: 100%;margin:0;padding: 0}
+                        #map{
+                            height: 50%;
+                        }
+                    
+
+                </style>
+    </head>
+    <body>
+                <div id="map">
+    
+                </div>
+                <div class="form">
+                    <label>Latitude</label>
+                    <input name="latitude" id="latitude"/>
+                    <label>Logintude</label>
+                    <input name="logintude" id="logintude"/>
+                    <label>Tipo</label>
+                    <select id="tipo">
+                        <option value="roadmap">roadmap</option>
+                        <option value="satellite">satellite</option>
+                    </select>
+                    <textarea id="estilo"></textarea>
+                    <button onclick="initMap()">Adicionar</button>
+                    <button onclick="remover()">Remover todos os itens</button>
+            </div>
+
+    <script>
+        function initMap() {
+            
+           let estilo = JSON.parse(document.getElementById("estilo").value);
+            const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 3,
+            mapTypeId : document.getElementById("tipo").value,
+            styles:estilo,
+            center: { lat:   parseFloat(document.getElementById("latitude").value), lng:  parseFloat(document.getElementById("logintude").value) }
+                
+    })
+    
+    ;
+}
+    </script>
+            <script 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=">
+            </script>
+         
+
+</body>
+</html>

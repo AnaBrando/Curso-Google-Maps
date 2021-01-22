@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place Searches</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=initMap&libraries=places&v=weekly"
+      defer
+    ></script>
+    <style>
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+       #map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+    </style>>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+  <script>// This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    let map;
+    let service;
+    let infowindow;
+    
+    function initMap() {
+      const sp = new google.maps.LatLng(-23.5489 , -46.6388);
+     
+      
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: sp,
+        zoom: 15,
+      });
+      var resquest = {
+            location : sp,
+            radius:'500',
+            query:'school'
+        }
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(resquest,callback);
+    }
+    function callback(results,status){
+        if(status === google.maps.places.PlacesServiceStatus.OK){
+            for (let index = 0; index < results.length; index++) {
+                var place = results[index];
+                createMarker(place);
+                
+            }
+        }
+    }
+    function createMarker(place) {
+        const marker = new google.maps.Marker({
+            icon:place.icon,
+            map,
+            zoom:9,
+            position: place.geometry.location,
+        });
+        google.maps.event.addListener(marker, "click", () => {
+            createInfoWindow(marker,place);
+           
+        });
+    }
+
+    function createInfoWindow(marker,place) {
+    var infowindow = new google.maps.InfoWindow({
+        maxWidth: 300,
+        name: ''
+    });
+    infowindow.setContent(place.name);
+    infowindow.open(map, marker);
+    map.panTo(marker.getPosition());
+}
+    </script>
+    </body>
+</html>
+        

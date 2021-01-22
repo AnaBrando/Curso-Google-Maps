@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                <style>
+                        html,body{height: 100%;margin:0;padding: 0}
+                        #map{
+                            height: 100%;
+                        }
+                    
+
+                </style>
+             <script async defer
+             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=initMap">
+             </script> 
+    </head>
+    <body>
+        <div id="floating-panel">
+          <input id="address" type="textbox"  />
+          <input id="submit" type="button" value="Geocode" onclick="initMap()"/>
+        </div>
+        <div id="floating-panel">
+            <input id="ldt" type="textbox"  />
+            <input id="lgt" type="textbox"  />
+            <input id="submit2" type="button" value="ReverseGeocode" onclick="Reverse()" />
+          </div>
+        <div id="map"></div>
+        <script>
+function initMap() {
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 8,
+                    center: { lat: -34.397, lng: 150.644 },
+                });
+                const geocoder = new google.maps.Geocoder();
+                    geocodeAddress(geocoder, map);
+}
+
+function geocodeAddress(geocoder, resultsMap) {
+  const address = document.getElementById("address").value;
+  geocoder.geocode({ address: address }, (results, status) => {
+    if (status === "OK") {
+      resultsMap.setCenter(results[0].geometry.location);
+      new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location,
+      });
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+  });
+}
+
+function Reverse() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 8,
+    center: { lat: 40.731, lng: -73.997 },
+  });
+  const geocoder = new google.maps.Geocoder();
+  const infowindow = new google.maps.InfoWindow();
+    geocodeLatLng(geocoder, map, infowindow);
+
+}
+
+function geocodeLatLng(geocoder, map, infowindow) {
+  const ldt = document.getElementById("ldt").value;
+  const lgt = document.getElementById("lgt").value;
+  const latlng = {
+    lat: parseFloat(ldt),
+    lng: parseFloat(lgt),
+  };
+  geocoder.geocode({ location: latlng }, (results, status) => {
+    if (status === "OK") {
+      if (results[0]) {
+        map.setZoom(11);
+        const marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+        });
+        infowindow.setContent(results[0].formatted_address);
+        infowindow.open(map, marker);
+      } else {
+        window.alert("No results found");
+      }
+    } else {
+      window.alert("Geocoder failed due to: " + status);
+    }
+  });
+}
+
+        </script>
+      </body>
+    </html>
+
+

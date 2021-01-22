@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                <style>
+                        html,body{height: 100%;margin:0;padding: 0}
+                        #map{
+                            height: 100%;
+                        }
+                    
+
+                </style>
+    </head>
+    <body>
+       
+                <div id="map">
+    
+                </div>
+      
+      <script>
+          var map;
+var service;
+var infowindow;
+ function initMap() {
+  
+
+
+var campoGrande = new google.maps.LatLng(37.774546, -122.433523);
+infowindow = new google.maps.InfoWindow();
+
+map = new google.maps.Map(document.getElementById('map'), {
+  center: campoGrande,
+  zoom: 13,
+  mapTypeId: 'roadmap'
+});
+var request = {
+    query:'Teste',
+    fields:['name','geometry']
+};
+var service = new google.maps.places.PlacesService(map);
+
+service.findPlaceFromQuery(request,function(results,status){
+    if(status === google.maps.places.PlacesServiceStatus.OK)
+    {
+        for (let index = 0; index < results.length; index++) {
+            createMarker(results[index]);
+            
+        } 
+        map.setCenter(results[0].geometry.location);
+    }
+})
+
+}
+function createMarker(place) {
+
+new google.maps.Marker({
+    position: place.geometry.location,
+    map: map
+});
+}
+      </script>
+
+     
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&libraries=places&callback=initMap"></script>
+
+            <!-- <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=initMap">
+            </script> -->
+             <!-- <script
+             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=initMap&libraries=visualization&v=weekly"
+             defer></script> -->
+    </body>
+
+ 
+</html>

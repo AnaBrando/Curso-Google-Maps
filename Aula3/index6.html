@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #map{
+                height: 900px;
+                width: 100%;
+            }
+        </style>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=localContext&key=AIzaSyB1saUjtFLYEus1v9oNEqN1zyJ5S5j9OSs&callback=initMap"
+        
+        ></script>
+        <script>
+            let map;
+            function initMap() {
+                const localContextMapView = new google.maps.localContext.LocalContextMapView();
+                localContextMapView.element = document.getElementById("map");
+                localContextMapView.placeTypePreferences = ["restaurant", "tourist_attraction"];
+                localContextMapView.maxPlaceCount = 12;
+                map = localContextMapView.map;
+                map.setOptions({
+                    center: { lat: 51.507307, lng: -0.08114 },
+                    zoom: 14,
+                });
+            }
+        </script>
+        <body>
+            <div id="map">
+
+            </div>
+        </body>
+    </head>
+</html>
